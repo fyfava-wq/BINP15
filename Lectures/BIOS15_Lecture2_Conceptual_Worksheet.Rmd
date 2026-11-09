@@ -1,0 +1,245 @@
+---
+title: "BIOS15 – Conceptual Worksheet 2"
+subtitle: "The linear model: from parameters to biological meaning"
+author: "Your name"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+---
+
+# Goal
+
+Read a linear model as a biological statement: distinguish fitted values from residual variation, interpret model parameters in their units, and separate effect size from statistical support.
+
+# 1. Read the model as a biological statement
+
+Consider:
+
+\[
+y_i = \beta_0 + \beta_1 x_i + \varepsilon_i,
+\qquad \varepsilon_i \sim N(0,\sigma^2)
+\]
+
+The line gives the model's expected value of the response. The vertical deviations of observations from that line are the residuals.
+
+## 1a. Identify parts of a regression plot
+
+On a regression plot, label or sketch observed \(y\), predicted \(\hat{y}\), one residual \(\varepsilon\), and the fitted regression line.
+
+**Your answer / sketch:**
+
+_Write here._
+
+## 1b. Interpret the parameters
+
+What does \(\beta_0\) represent? What does \(\beta_1\) represent?
+
+**Your answer:**
+
+_Write here._
+
+## 1c. Interpret the units
+
+If \(x\) is leaf length (mm) and \(y\) is leaf width (mm), what units must \(\beta_1\) have?
+
+**Your answer:**
+
+_Write here._
+
+# 2. Intercept, slope, prediction and residual
+
+Suppose:
+
+\[
+\hat{y} = 0.5 + 0.4x
+\]
+
+Here, \(x\) is leaf length (mm) and \(\hat{y}\) is predicted leaf width (mm).
+
+## 2a. Interpret the slope
+
+Translate the slope 0.4 into a biological sentence.
+
+**Your answer:**
+
+_Write here._
+
+## 2b. Interpret the intercept
+
+What does the intercept 0.5 mean mathematically? Would it necessarily be biologically interesting if no leaves approach 0 mm in length?
+
+**Your answer:**
+
+_Write here._
+
+## 2c. Make a prediction
+
+What width does the model predict for a 10-mm leaf?
+
+\[
+\hat{y} = \underline{\hspace{3cm}}\ \text{mm}
+\]
+
+## 2d. Calculate a residual
+
+If that leaf actually has width 5.2 mm, calculate its residual using \(\varepsilon = y - \hat{y}\).
+
+\[
+\varepsilon = \underline{\hspace{3cm}}\ \text{mm}
+\]
+
+## 2e. Interpret a negative residual
+
+In words, what would a negative residual mean?
+
+**Your answer:**
+
+_Write here._
+
+# 3. What is actually assumed to be normal?
+
+The model states:
+
+\[
+\varepsilon \sim N(0,\sigma^2)
+\]
+
+A student says: "Linear regression assumes that x and y are normally distributed."
+
+## 3a. Identify the normal quantity
+
+What does the model equation actually say is assumed to follow a normal distribution?
+
+**Your answer:**
+
+_Write here._
+
+## 3b. Consider a skewed predictor
+
+Could \(x\) itself be strongly skewed and the Gaussian linear model still be appropriate? Explain.
+
+**Your answer:**
+
+_Write here._
+
+## 3c. Use residual plots
+
+Why do residual plots help us assess whether the model is appropriate?
+
+**Your answer:**
+
+_Write here._
+
+# 4. Same effect, different statistical support
+
+The three datasets below were generated with the same underlying slope. What differs is residual scatter and/or sample size.
+
+## 4a. Compare precision
+
+Which dataset (A, B or C) should give the most precise estimate of \(\beta_1\)? Why?
+
+**Your answer:**
+
+_Write here._
+
+## 4b. Factors affecting statistical support
+
+Which features of a dataset affect the statistical support for a non-zero slope?
+
+**Your answer:**
+
+_Write here._
+
+## 4c–4e. Compare two studies
+
+| Study | Estimated slope \(\hat{\beta}_1\) | P-value |
+|---|---:|---:|
+| A | 0.50 | 0.08 |
+| B | 0.05 | < 0.001 |
+
+**4c.** Which study has the larger estimated effect?
+
+**Your answer:** _Write here._
+
+**4d.** Which has stronger statistical evidence against \(\beta_1 = 0\)?
+
+**Your answer:** _Write here._
+
+**4e.** Can you decide which result is more biologically important from the P-values alone? Explain.
+
+**Your answer:**
+
+_Write here._
+
+# 5. What does \(R^2\) tell us?
+
+The two datasets below have approximately the same slope, but different amounts of scatter around the regression line.
+
+## 5a. Compare \(R^2\)
+
+Which dataset (A or B) should have the larger \(R^2\)? Why?
+
+**Your answer:**
+
+_Write here._
+
+## 5b. Slope and \(R^2\)
+
+Does a large \(R^2\) necessarily mean that the slope is steep?
+
+- [ ] Yes
+- [ ] No
+
+Explain:
+
+_Write here._
+
+## 5c. Interpret \(R^2\)
+
+Complete: \(R^2 = 0.43\) means that **_____ %** of the variation in **__________________** is explained by **__________________**.
+
+# 6. Turn statistics back into biology
+
+Poor Results sentence:
+
+> "There was a significant relationship between leaf length and leaf width (P < 0.001)."
+
+Suppose the model gives:
+
+\[
+\hat{\beta}_1 = 0.43 \pm 0.04\ \text{mm/mm},
+\qquad R^2 = 0.43
+\]
+
+## 6a. Identify missing information
+
+What biologically useful information is missing from the original sentence?
+
+**Your answer:**
+
+_Write here._
+
+## 6b. Rewrite the result
+
+Rewrite the result so that the biological effect is quantified and interpretable.
+
+**Your revised Results sentence:**
+
+_Write here._
+
+# Exit ticket
+
+Complete: "When I see the output of a linear model, the first quantity I want to interpret biologically is..."
+
+**Your answer:**
+
+_Write here._
+
+# Additional questions
+
+Questions to revisit during the R exercise / after the lecture:
+
+_Write here._
