@@ -8,12 +8,9 @@
 
 A linear model describes how one or more predictor variables are related to a response variable:
 
-$$
-
+```math
 y_i = \beta_0 + \sum_j \beta_j x_{ij} + \varepsilon_i
-
-$$
-
+```
 | Term | Meaning |
 |---|---|
 | $y_i$ | Observed response for observation $i$ |
@@ -24,12 +21,9 @@ $$
 
 For simple linear regression with one predictor:
 
-$$
-
+```math
 y_i = \beta_0 + \beta_1 x_i + \varepsilon_i
-
-$$
-
+```
 - **Response variable (y):** dependent variable being explained or predicted.
 - **Predictor variable (x):** independent variable used to explain or predict the response.
 - **Linear regression** is used when the predictor is continuous.
@@ -39,18 +33,12 @@ $$
 
 Ordinary least-squares regression estimates the intercept and slope by minimising the **sum of squared residuals** (the squared vertical differences between observations and the fitted regression line).
 
-$$
-
+```math
 \hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i
-
-$$
-
-$$
-
+```
+```math
 e_i = y_i - \hat{y}_i
-
-$$
-
+```
 - A **predicted value** $\hat y_i$ is the response expected from the fitted model.
 - A **residual** $e_i$ is the observed value minus the predicted value.
 - Positive residual: observation is above the fitted line.
@@ -58,12 +46,9 @@ $$
 
 The slope in simple regression can also be expressed as:
 
-$$
-
+```math
 \hat{\beta}_1 = \frac{\operatorname{Cov}(x,y)}{\operatorname{Var}(x)}
-
-$$
-
+```
 ### Interpreting the coefficients
 
 - **Intercept:** predicted value of $y$ when $x=0$. It may have little biological meaning if zero is outside the relevant range of the predictor.
@@ -76,12 +61,9 @@ A useful biological interpretation can describe the predicted response to a real
 
 The model assumes that the **residuals**, not the raw response or predictor data, are normally distributed:
 
-$$
-
+```math
 \varepsilon_i \sim N(0,\sigma^2)
-
-$$
-
+```
 Minor deviations from normality are generally not a problem.
 
 Useful diagnostic approaches shown in the lecture:
@@ -208,12 +190,9 @@ Important points from the lecture:
 
 In the simulated leaf example, the fitted slope was approximately:
 
-$$
-
+```math
 \hat{\beta}_1 = 0.433 \pm 0.035\ \text{mm/mm}
-
-$$
-
+```
 Interpretation: predicted leaf width increased by approximately 0.43 mm for each 1 mm increase in leaf length.
 
 The lecture also illustrates interpreting the effect over a one-standard-deviation increase in the predictor. In that example, predicted leaf width increased by approximately 0.86 mm per standard-deviation increase in leaf length.
@@ -229,22 +208,16 @@ When reporting a slope:
 
 For a simple linear regression:
 
-$$
-
+```math
 R^2 = r^2
-
-$$
-
+```
 where $r$ is the Pearson correlation between x and y.
 
 $R^2$ describes the proportion of variation in the response variable explained by the fitted model:
 
-$$
-
+```math
 R^2 = \frac{\operatorname{Var}(\hat y)}{\operatorname{Var}(y)}
-
-$$
-
+```
 For example, $R^2 = 0.431$ means that **43.1% of the variation in y is explained by x** in this simple regression.
 
 A high $R^2$ does not, by itself, tell us that the slope is biologically large or important.
@@ -253,20 +226,14 @@ A high $R^2$ does not, by itself, tell us that the slope is biologically large o
 
 Biological scaling relationships are often described by a power law:
 
-$$
-
+```math
 y = ax^b
-
-$$
-
+```
 Taking logarithms gives a linear relationship:
 
-$$
-
+```math
 \log(y) = \log(a) + b\log(x)
-
-$$
-
+```
 When both response and predictor are natural-log transformed:
 - The intercept is $\log(a)$.
 - The slope $b$ is an **allometric slope**.
@@ -315,20 +282,14 @@ The lecture describes:
 
 The lecture gives the reliability ratio as:
 
-$$
-
+```math
 K = 1 - \frac{\sigma^2_{me}}{\sigma^2_x}
-
-$$
-
+```
 and the corrected slope as:
 
-$$
-
+```math
 \beta' = \frac{\hat{\beta}}{K}
-
-$$
-
+```
 where $\sigma^2_{me}$ is the measurement-error variance and $\sigma^2_x$ is the variance in the predictor.
 
 The notes also ask what happens when error is added to y instead. This is an exercise to investigate rather than a result to assume.
