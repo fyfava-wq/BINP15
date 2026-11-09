@@ -1,0 +1,274 @@
+---
+title: "BINP15 – Lecture 1: Questions and R Exercises"
+subtitle: "Processing and Analysis of Biological Data"
+author: "Your name"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+---
+
+# How to use this worksheet
+
+Work through the questions before looking up the lecture notes. Run the R chunks, write your interpretation in the answer spaces, and commit your completed `.Rmd` file to Git.
+
+This worksheet includes a transcription of your handwritten answers to the Lecture 1 conceptual worksheet. My clarifications are explicitly labelled **[ChatGPT comment]**. The additional R exercises remain available for practice.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+
+# Completed conceptual worksheet: your handwritten answers
+
+The answers below are transcribed from your photographed worksheet. Your wording and reasoning are retained as closely as possible. Any clarification or correction added by me is explicitly marked **[ChatGPT comment]**. Where you left a question blank, I have left it unanswered rather than inventing an answer.
+
+## 1. What are we actually measuring?
+
+### 1a. What has actually been measured? What biological property is it intended to represent?
+
+**Your answer:** The size of the individuals.
+
+**[ChatGPT comment]** More precisely, the researcher has measured **body length**. This is being used as an observable proxy for the biological concept of **attractiveness**. Size is not the same thing as attractiveness; the study needs a biological rationale for connecting them.
+
+### 1b. Could body length be a poor measurement of attractiveness even if measured almost perfectly?
+
+**Your answer:** Yes. Size may not matter that much; maybe colour is more important.
+
+**[ChatGPT comment]** Correct. Measurement precision (how accurately body length is recorded) is different from validity (whether body length represents attractiveness well).
+
+### 1c. Give another biological concept that cannot be measured directly and an observable variable that might represent it.
+
+**Your answer:** Mating calls – might be measured in volume or melody.
+
+**[ChatGPT comment]** Good example. You could operationalize properties of mating calls using measurable features such as amplitude/loudness, frequency, duration or acoustic pattern. Which feature is appropriate depends on the biological question.
+
+## 2. When do numbers permit different comparisons?
+
+### 2a. Is 40 cm twice as tall as 20 cm?
+
+**Your answer:** Yes, objective measurements.
+
+**[ChatGPT comment]** Correct. Height is a ratio-scale measurement with a meaningful zero, so a ratio comparison is meaningful: 40 cm is twice 20 cm.
+
+### 2b. Is day 40 twice as late as day 20?
+
+**Your answer:** No, it depends on the day you start counting.
+
+**[ChatGPT comment]** Correct. Day-of-year is an interval-scale variable with an arbitrary zero. Differences between dates are meaningful, but ratios such as “twice as late” depend on the chosen origin.
+
+### 2c. If rare = 1, common = 2 and dominant = 3, is a mean score of 2.2 biologically meaningful?
+
+**Your answer:** No, there is nothing in between common and dominant.
+
+**[ChatGPT comment]** Correct. These are ordinal categories: their order is meaningful, but the distances between categories are not established as equal. A numerical mean such as 2.2 therefore has no straightforward biological interpretation.
+
+### 2d. What changes if flowering time is recorded from December 1 rather than January 1?
+
+**Your answer:** The relative differences between samples stay the same (for example, 30 - 0 = 40 - 10). Proportional comparisons change. You listed variance, mean, median and mode as statistics that change.
+
+**[ChatGPT comment]** The key idea about differences is right. One important correction: changing the origin by adding the same constant to every observation changes the **mean, median and mode** by that constant, but it does **not** change the variance or standard deviation. Pairwise differences also stay the same. Proportional comparisons and the coefficient of variation can change because the zero is arbitrary.
+
+## 3. What does “typical” mean?
+
+### 3a. Predict the relationship between mean and median.
+
+**Your answer:**
+- Distribution A (roughly symmetric): mean approximately equals median.
+- Distribution B (strongly right-skewed): mean is greater than median.
+
+**[ChatGPT comment]** Correct.
+
+### 3b. Why does the shape of Distribution B affect the mean more strongly than the median?
+
+**Your answer:** There are a few big values that drive the mean up.
+
+**[ChatGPT comment]** Correct. The mean uses the magnitude of every observation, so very large values pull it towards the long right tail. The median depends on the middle rank and is less affected by the size of extreme values.
+
+### 3c. Does a genuine, very large observation have to be removed because it is an outlier?
+
+**Your answer:** No answer written on the worksheet.
+
+**[ChatGPT comment]** A genuine observation should not be removed merely because it is extreme. First investigate whether it is a measurement or recording error. If it is a valid biological observation, retain it unless there is a clearly justified reason and a transparent analysis plan for handling it.
+
+## 4. Same mean, different biology
+
+### 4a. Sketch plausible distributions.
+
+**Your answer:** You drew Population A as a narrow, tall distribution around 10 g and Population B as a much wider distribution around 10 g.
+
+**[ChatGPT comment]** This communicates the intended contrast: both populations have the same mean, but Population A has much less spread (SD = 0.5 g) than Population B (SD = 3 g). The exact shape does not need to be identical to your sketch; the important feature is the difference in spread.
+
+### 4b. Complete: Standard deviation describes ______, not ______.
+
+**Your answer:** Variance, not average.
+
+**[ChatGPT comment]** Your distinction is on the right track: SD describes the **spread/dispersion of observations**, not the average. Strictly, SD is the square root of variance, so it is not itself variance.
+
+### 4c. What might “10 ± 3 g (SD)” accidentally suggest?
+
+**Your answer:** That 3 g is standard error, not SD.
+
+**[ChatGPT comment]** Yes. The ± notation can be mistaken for uncertainty or precision of the estimated mean. It is important to label whether the quantity is SD, SE or a confidence interval.
+
+### 4d. Can a population have large biological variation while its mean is estimated very precisely?
+
+**Your answer:** Yes (you selected “Yes” on the worksheet).
+
+**[ChatGPT comment]** Correct. A large sample can estimate the mean precisely even when individual observations vary considerably. The standard error is approximately SD divided by the square root of sample size: `SE = SD / sqrt(n)`.
+
+## 5. Bigger organisms, bigger variation?
+
+Given:
+- Species A: mean = 10 mm, SD = 2 mm.
+- Species B: mean = 100 mm, SD = 5 mm.
+
+### 5a. Which species has greater absolute variation?
+
+**Your answer:** Species B.
+
+**[ChatGPT comment]** Correct. Its SD is 5 mm, compared with 2 mm for Species A.
+
+### 5b. Which species has greater proportional variation?
+
+**Your answer:** Species A. Greater relative measurements tend to have greater overall variation.
+
+**[ChatGPT comment]** Your choice is correct; the explanation can be made more precise. Species A has a larger SD relative to its mean.
+
+### 5c. Calculate CV = SD / mean.
+
+**Your answers:**
+- CV(A) = 20%.
+- CV(B) = 5%.
+
+**[ChatGPT comment]** Correct:
+- A: 2 / 10 = 0.20 = 20%.
+- B: 5 / 100 = 0.05 = 5%.
+
+### 5d. Why can “which species is more variable?” have two different answers?
+
+**Your answer:** It depends on whether you are comparing absolute or proportional variation.
+
+**[ChatGPT comment]** Correct. Species B has greater absolute variation, while Species A has greater proportional variation.
+
+### 5e. Why is CV problematic for day-of-year?
+
+**Your answer:** If the date is moved, every measurement shifts and proportions change.
+
+**[ChatGPT comment]** Correct. Day-of-year has an arbitrary zero. Changing the origin changes the mean and therefore changes CV, even though the actual dates and differences between them have not changed. CV is most interpretable for ratio-scale variables with a meaningful zero.
+
+## 6. Could somebody reproduce your result?
+
+### 6a. Fill in the two missing steps between raw data and a figure.
+
+**Your answer:** Methods → parameters/code.
+
+**[ChatGPT comment]** Your answer identifies the need for documented methods and analysis code/parameters. A useful workflow is: **raw data → data processing/cleaning → analysis code and model settings → figure**. The exact steps should be recorded so another researcher can repeat them.
+
+### 6b. Is “we removed outliers, log-transformed the data, and fitted a linear model” enough?
+
+**Your answer:** No, no parameters or exact method provided.
+
+**[ChatGPT comment]** Correct. The description needs enough detail to identify which observations were removed and why, how the transformation was applied, the model formula and assumptions, and relevant software/package settings.
+
+## 6b. Reproducibility and version control
+
+### 6c. What information is difficult to recover from filenames such as `analysis_final.R`, `analysis_final2.R`, `analysis_final_revised.R` and `analysis_REALLY_final.R`?
+
+**Your answer:** Which is the final one? V1 → V2?
+
+**[ChatGPT comment]** Exactly. The filenames do not reliably show which version is current, what changed between versions, when changes were made or why they were made.
+
+### 6d. What could version control add beyond keeping a backup copy?
+
+**Your answer:** You can track back a version that still works and recover it.
+
+**[ChatGPT comment]** Correct. Git also records changes over time, allows you to compare versions, see commit messages and identify when and why a change was introduced.
+
+### 6e. If a result changes after modifying code, what would you want to know?
+
+**Your answer:** What changed in the code?
+
+**[ChatGPT comment]** Correct starting point. You would compare the code versions and identify whether the change affected data processing, exclusions, transformations, model specification or plotting. Then check whether the change was intentional and scientifically justified.
+
+## 7. Exit ticket
+
+### 7.1. Before choosing a statistical summary, what should you ask about the variable?
+
+**Your answer:** What type of data is that, what type of scale is it measured in?
+
+**[ChatGPT comment]** Correct. Also consider what the values represent and the shape of their distribution.
+
+### 7.2. What is the difference between variation in biological observations and uncertainty in an estimate?
+
+**Your answer:** Variation is observed; uncertainty is the possible error.
+
+**[ChatGPT comment]** Correct in essence. Biological variation describes differences among individual observations. Uncertainty describes how precisely we have estimated a quantity (such as the population mean) from our sample.
+
+### 7.3. Complete: A reproducible analysis is one where…
+
+**Your answer:** It is clear what steps have been made to derive the result.
+
+**[ChatGPT comment]** Correct. Ideally, the raw data, code, processing steps, analysis choices and software details are available so someone else can repeat the workflow and obtain the same result.
+
+
+## EXERCISE: 
+1. Use non-parametric bootstrapping to derive a 95% confidence interval for the CV of a variable.
+Start by writing a function that computes the CV for a variable (see the Appendix for a brief introduction to writing functions in R). Then, simulate a random variable and write a loop that samples many times from this variable and computes the CV.
+
+```{r ex-1}
+set.seed(1)
+x = rnorm(n=100, mean=5, sd=1)
+
+CV <- function(x){
+  sd(x)/mean(x)
+}
+
+CV(x)
+
+out = NULL
+for(i in 1:100){
+  sample1 = sample(x, replace=TRUE)
+  out[i] = CV(sample1)
+}
+
+quantile(out, c(0.025, 0.975))
+
+hist(out,
+     main = "Bootstrap distribution of CV",
+     xlab = "Coefficient of variation")
+```
+
+2. *Optional exercise:* The proportional properties of the natural log
+Use simulated data to show the close relationship between the SD of log-transformed data and the CV on arithmetic scale. You may need e.g. the rnorm function and a for-loop to achieve this. 
+
+One strategy would be to start with comparing the two values for a single case, then build a matrix to hold the paired values, and finally use a for-loop to populate the matrix.
+
+```{r ex-2, eval=FALSE}
+set.seed(1)
+x = rnorm(n=100, mean=5, sd=1)
+
+xlog = log(x)
+sd(xlog)
+
+CV(x)
+
+matrixinp = matrix(data=NA, nrow=100, ncol=2)
+#matrixinp[row,column]
+
+for(i in 1:100){
+  sample1 = sample(x, replace=TRUE)
+  matrixinp[i,1] = CV(sample1)
+  matrixinp[i,2] = sd(log(sample1))
+}
+
+colnames(matrixinp)<-c('CV', 'SD(log)')
+
+
+# display filled matrix
+print(matrixinp)
+
+plot(matrixinp)
+```
