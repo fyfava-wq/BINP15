@@ -8,23 +8,27 @@
 
 A linear model describes how one or more predictor variables are related to a response variable:
 
-\[
+$$
+
 y_i = \beta_0 + \sum_j \beta_j x_{ij} + \varepsilon_i
-\]
+
+$$
 
 | Term | Meaning |
 |---|---|
-| \(y_i\) | Observed response for observation \(i\) |
-| \(x_{ij}\) | Value of predictor \(j\) for observation \(i\) |
-| \(\beta_0\) | Intercept: expected response when predictors are zero |
-| \(\beta_j\) | Coefficient/slope for predictor \(j\) |
-| \(\varepsilon_i\) | Residual: difference between observed and model-predicted response |
+| $y_i$ | Observed response for observation $i$ |
+| $x_{ij}$ | Value of predictor $j$ for observation $i$ |
+| $\beta_0$ | Intercept: expected response when predictors are zero |
+| $\beta_j$ | Coefficient/slope for predictor $j$ |
+| $\varepsilon_i$ | Residual: difference between observed and model-predicted response |
 
 For simple linear regression with one predictor:
 
-\[
+$$
+
 y_i = \beta_0 + \beta_1 x_i + \varepsilon_i
-\]
+
+$$
 
 - **Response variable (y):** dependent variable being explained or predicted.
 - **Predictor variable (x):** independent variable used to explain or predict the response.
@@ -35,29 +39,35 @@ y_i = \beta_0 + \beta_1 x_i + \varepsilon_i
 
 Ordinary least-squares regression estimates the intercept and slope by minimising the **sum of squared residuals** (the squared vertical differences between observations and the fitted regression line).
 
-\[
+$$
+
 \hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i
-\]
 
-\[
+$$
+
+$$
+
 e_i = y_i - \hat{y}_i
-\]
 
-- A **predicted value** \(\hat y_i\) is the response expected from the fitted model.
-- A **residual** \(e_i\) is the observed value minus the predicted value.
+$$
+
+- A **predicted value** $\hat y_i$ is the response expected from the fitted model.
+- A **residual** $e_i$ is the observed value minus the predicted value.
 - Positive residual: observation is above the fitted line.
 - Negative residual: observation is below the fitted line.
 
 The slope in simple regression can also be expressed as:
 
-\[
+$$
+
 \hat{\beta}_1 = \frac{\operatorname{Cov}(x,y)}{\operatorname{Var}(x)}
-\]
+
+$$
 
 ### Interpreting the coefficients
 
-- **Intercept:** predicted value of \(y\) when \(x=0\). It may have little biological meaning if zero is outside the relevant range of the predictor.
-- **Slope:** expected change in \(y\) for a one-unit increase in \(x\).
+- **Intercept:** predicted value of $y$ when $x=0$. It may have little biological meaning if zero is outside the relevant range of the predictor.
+- **Slope:** expected change in $y$ for a one-unit increase in $x$.
 - The slope has units of **response units / predictor units**. For example, if leaf width and leaf length are both measured in mm, the slope is in mm/mm.
 
 A useful biological interpretation can describe the predicted response to a realistic change in the predictor, such as a one-standard-deviation increase.
@@ -66,9 +76,11 @@ A useful biological interpretation can describe the predicted response to a real
 
 The model assumes that the **residuals**, not the raw response or predictor data, are normally distributed:
 
-\[
+$$
+
 \varepsilon_i \sim N(0,\sigma^2)
-\]
+
+$$
 
 Minor deviations from normality are generally not a problem.
 
@@ -196,9 +208,11 @@ Important points from the lecture:
 
 In the simulated leaf example, the fitted slope was approximately:
 
-\[
+$$
+
 \hat{\beta}_1 = 0.433 \pm 0.035\ \text{mm/mm}
-\]
+
+$$
 
 Interpretation: predicted leaf width increased by approximately 0.43 mm for each 1 mm increase in leaf length.
 
@@ -211,43 +225,51 @@ When reporting a slope:
 4. Explain what the estimate means biologically.
 5. Where useful, translate it into a realistic change in the predictor.
 
-## 8. Coefficient of determination: \(R^2\)
+## 8. Coefficient of determination: $R^2$
 
 For a simple linear regression:
 
-\[
+$$
+
 R^2 = r^2
-\]
 
-where \(r\) is the Pearson correlation between x and y.
+$$
 
-\(R^2\) describes the proportion of variation in the response variable explained by the fitted model:
+where $r$ is the Pearson correlation between x and y.
 
-\[
+$R^2$ describes the proportion of variation in the response variable explained by the fitted model:
+
+$$
+
 R^2 = \frac{\operatorname{Var}(\hat y)}{\operatorname{Var}(y)}
-\]
 
-For example, \(R^2 = 0.431\) means that **43.1% of the variation in y is explained by x** in this simple regression.
+$$
 
-A high \(R^2\) does not, by itself, tell us that the slope is biologically large or important.
+For example, $R^2 = 0.431$ means that **43.1% of the variation in y is explained by x** in this simple regression.
+
+A high $R^2$ does not, by itself, tell us that the slope is biologically large or important.
 
 ## 9. Log-transformed regression and allometry
 
 Biological scaling relationships are often described by a power law:
 
-\[
+$$
+
 y = ax^b
-\]
+
+$$
 
 Taking logarithms gives a linear relationship:
 
-\[
+$$
+
 \log(y) = \log(a) + b\log(x)
-\]
+
+$$
 
 When both response and predictor are natural-log transformed:
-- The intercept is \(\log(a)\).
-- The slope \(b\) is an **allometric slope**.
+- The intercept is $\log(a)$.
+- The slope $b$ is an **allometric slope**.
 - The slope can be interpreted as an elasticity: the percentage change in y associated with a percentage change in x.
 
 For example, a slope of 0.55 means that a 10% increase in body mass is associated with approximately a 5.5% increase in brain mass.
@@ -293,17 +315,21 @@ The lecture describes:
 
 The lecture gives the reliability ratio as:
 
-\[
+$$
+
 K = 1 - \frac{\sigma^2_{me}}{\sigma^2_x}
-\]
+
+$$
 
 and the corrected slope as:
 
-\[
-\beta' = \frac{\hat{\beta}}{K}
-\]
+$$
 
-where \(\sigma^2_{me}\) is the measurement-error variance and \(\sigma^2_x\) is the variance in the predictor.
+\beta' = \frac{\hat{\beta}}{K}
+
+$$
+
+where $\sigma^2_{me}$ is the measurement-error variance and $\sigma^2_x$ is the variance in the predictor.
 
 The notes also ask what happens when error is added to y instead. This is an exercise to investigate rather than a result to assume.
 
@@ -356,7 +382,7 @@ Start by performing the relevant operation once. Only then add indexing, loops o
 - Residuals are observed minus predicted values; the normality assumption concerns residuals, not the raw data.
 - Interpret slopes in their units and translate them into biological changes.
 - Standard errors describe coefficient precision; p-values alone do not measure biological importance.
-- \(R^2\) is the proportion of response variation explained by the model.
+- $R^2$ is the proportion of response variation explained by the model.
 - Log-log regression turns a power-law relationship into a linear model; its slope is an elasticity.
 - Measurement error in the predictor can bias the estimated slope downwards.
 - Reproducible, readable code and biologically meaningful reporting are part of the analysis.
