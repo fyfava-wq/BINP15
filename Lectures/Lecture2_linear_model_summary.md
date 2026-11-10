@@ -216,7 +216,7 @@ where $r$ is the Pearson correlation between x and y.
 $R^2$ describes the proportion of variation in the response variable explained by the fitted model:
 
 ```math
-R^2 = \frac{\operatorname{Var}(\hat y)}{\operatorname{Var}(y)}
+R^2 = \frac{Var(\hat{y})}{Var(y)}
 ```
 For example, $R^2 = 0.431$ means that **43.1% of the variation in y is explained by x** in this simple regression.
 
