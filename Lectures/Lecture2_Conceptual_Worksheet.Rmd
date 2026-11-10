@@ -30,8 +30,7 @@ The line gives the model's expected value of the response. The vertical deviatio
 On a regression plot, label or sketch observed \(y\), predicted \(\hat{y}\), one residual \(\varepsilon\), and the fitted regression line.
 
 **Your answer / sketch:**
-
-![linear regression](~/Studijos Lund/1 semester/BINP15/Code/Lectures/Supplementary/linear_regression.jpg)
+![Linear regression](Supplementary/linear_regression.jpg)
 
 ## 1b. Interpret the parameters
 
@@ -150,7 +149,7 @@ Residual plots help us see whether the model misses systematic patterns in the d
 # 4. Same effect, different statistical support
 
 The three datasets below were generated with the same underlying slope. What differs is residual scatter and/or sample size.
-![linear regression](~/Studijos Lund/1 semester/BINP15/Code/Lectures/Supplementary/2_4.png)
+![linear regression](Supplementary/2_4.png)
 
 ## 4a. Compare precision
 
@@ -192,7 +191,7 @@ No. Effect size and biological context are also important considerations.
 # 5. What does \(R^2\) tell us?
 
 The two datasets below have approximately the same slope, but different amounts of scatter around the regression line.
-![linear regression](~/Studijos Lund/1 semester/BINP15/Code/Lectures/Supplementary/2_5.png)
+![linear regression](Supplementary/2_5.png)
 
 ## 5a. Compare \(R^2\)
 
@@ -261,3 +260,302 @@ Effect size.
 Questions to revisit during the R exercise / after the lecture:
 
 _Write here._
+
+
+# R practical: fitting a linear model (from lecture notes)
+
+Simulate data from a known linear relationship, fit the model, and inspect its predictions and residuals.
+
+```{r simulate-data}
+# Make the random numbers reproducible: rerunning this code gives the same data.
+set.seed(85)
+# Generate 200 predictor values (x), with mean 10 and standard deviation 2.
+x <- rnorm(n = 200, mean = 10, sd = 2)
+# Generate response values (y): 0.4 is the underlying slope, plus random noise.
+y <- 0.4 * x + rnorm(200, 0, 1)
+
+# Plot the observations; each point represents one paired x and y value.
+plot(x, y, las = 1,
+     xlab = "Leaf length (mm)",
+     ylab = "Leaf width (mm)")
+```
+
+Fit the model and inspect its estimates and diagnostics.
+
+```{r fit-model}
+# Fit a linear model: lm() estimates a straight-line relationship between y and x.
+# In the formula y ~ x, y is the response and x is the predictor.
+m <- lm(y ~ x)
+# Display the model object's components, such as coefficients and residuals.
+# str(m)
+# Extract the estimated coefficients: first the intercept, then the slope for x.
+cf <- coef(m)
+# Print the intercept (beta_0) and slope (beta_1).
+cf
+# Print model results, including coefficient uncertainty and R-squared.
+summary(m)
+```
+
+Read the printed output from top to bottom:
+
+- `cf`: `(Intercept)` is \(\beta_0\); `x` is \(\beta_1\), the slope.
+- `Estimate`: coefficient value. `Std. Error`: its uncertainty. `t value` = estimate / standard error. `Pr(>|t|)`: p-value for testing whether the coefficient is zero.
+- `Residuals`: observed minus predicted values; the five numbers summarize their spread.
+- `Residual standard error`: typical residual size, in `y` units.
+- `Multiple R-squared`: fraction of variation in `y` explained by the model. `Adjusted R-squared` adjusts for the number of predictors.
+- `F-statistic` and its p-value: test whether the model with `x` improves on a model with no predictor. With one predictor, this tests the same zero-slope relationship as the `x` row.
+
+So the fitted line is `y = -0.401 + 0.433 * x`. The slope says predicted `y` increases by about 0.433 units per one-unit increase in `x`. The intercept is predicted `y` at `x = 0`, which may not be meaningful if zero is outside the observed range.
+
+
+```{r model-diagnostics}
+# Predict y for every x value used to fit the model.
+predvals <- predict(m)
+# Arrange the next two plots side by side.
+par(mfrow = c(1, 2))
+#par(mfrow=c(2,2))
+# Start the first panel with a scatterplot of the observed values.
+plot(x, y, las = 1,
+     xlab = "Leaf length (mm)",
+     ylab = "Leaf width (mm)")
+# Add the fitted straight line from model m to the current scatterplot.
+abline(m)
+# Draw residuals as vertical segments from each observed y to its prediction.
+segments(x, y, x, predvals)
+# Plot a histogram to inspect the distribution of the model residuals.
+hist(residuals(m), xlab = "Residuals", las = 1)
+# Return to a single-panel plotting layout.
+par(mfrow = c(1, 1))
+
+```
+
+Draw the fitted line only across the observed range of `x`. .To keep the regression line within the data range, it is better to make predictions for new values of `x` spanning the data range and add the regression line using the lines function.
+
+```{r fitted-line}
+# Make 200 evenly spaced x values between the smallest and largest observed x.
+newx <- seq(min(x), max(x), length.out = 200)
+# Use the fitted model to predict y at each new x value.
+predy <- predict(m, newdata = data.frame(x = newx))
+
+# Create the scatterplot first; lines() below adds to this existing plot.
+plot(x, y, las = 1,
+     xlab = "Leaf length (mm)",
+     ylab = "Leaf width (mm)")
+# Connect the predictions to show the fitted line across the observed x range.
+lines(newx, predy)
+```
+
+# OPTIONAL EXERCISE: 
+Use non-parametric bootstrapping to derive a standard error for the slope of the
+linear regression above. Compare a bootstrap estimate of the slope's standard error with the model output.
+```{r ex_1}
+df = data.frame(x, y)
+colnames(df)<-c('x', 'y')
+
+# sample from this dataset (with replacement)
+newdf = df[sample(nrow(df), 200, replace=TRUE), ]
+colnames(newdf)<-c('x', 'y')
+
+# fit the model
+nm <- lm(y ~ x, data = newdf)
+coef(nm)
+
+set.seed(86)  # Make the results reproducible
+
+boot_slopes <- replicate(1000, {
+  # Sample rows with replacement
+  newdf <- df[sample(nrow(df), replace = TRUE), ]
+
+  # Fit y on x and save the slope coefficient
+  coef(lm(y ~ x, data = newdf))[2]
+})
+
+# Standard deviation of bootstrap slopes = bootstrap standard error
+sd(boot_slopes)
+
+```
+
+Interpret the slope in its units and compare the variance explained by the model with `R-squared`.
+
+```{r interpret-model}
+# The slope: expected change in y for a one-unit increase in x.
+cf[2]
+# The expected change in y for an increase in x equal to one standard deviation.
+cf[2] * sd(x)
+# In a simple linear regression, squared correlation equals the model's R-squared.
+cor(x, y)^2
+# Get the fitted (predicted) y value for each observed x value.
+y_hat <- predict(m)
+# Compare variance among predictions with the total variance in observed y.
+var(y_hat) / var(y)
+# Compute the variance explained by the fitted slope in this simple model.
+cf[2]^2 * var(x)
+```
+
+# Exercise: Fit a regression to real data
+
+Choose a dataset with a continuous response and a continuous predictor. Fit a simple linear regression, interpret the slope, make a figure with the fitted line, and write a short Methods and Results section.
+
+If you do not have a dataset, use the bird data below. It contains brain mass and body mass for male and female birds. Body parts often scale with body size according to a power relationship:
+
+\[
+y = a x^b
+\]
+
+Taking logs makes this a straight-line relationship:
+
+\[
+\log(y) = \log(a) + b\log(x)
+\]
+
+Here, the slope \(b\) describes how brain mass scales with body mass. For example, a slope of 0.55 means that a 10% increase in body mass is associated with approximately a 5.5% increase in brain mass.
+
+### 1. Load the data and fit the models
+
+```{r ex-2}
+# Read the bird data and inspect the first rows and column names.
+birds <- read.csv("Supplementary/bird_allometry.csv")
+head(birds)
+
+# Split the data by sex, then fit a line to log brain mass and log body mass.
+males <- birds[birds$Sex == "m", ]
+females <- birds[birds$Sex == "f", ]
+mm <- lm(log(brain_mass) ~ log(body_mass), data = males)
+mf <- lm(log(brain_mass) ~ log(body_mass), data = females)
+
+# Inspect residuals and model summaries for both groups.
+par(mfrow = c(1, 2))
+hist(residuals(mm), main = "Male residuals", xlab = "Residuals")
+hist(residuals(mf), main = "Female residuals", xlab = "Residuals")
+par(mfrow = c(1, 1))
+summary(mm)
+summary(mf)
+```
+
+In each coefficient table, the estimate beside `log(body_mass)` is the allometric slope. Compare the estimates and standard errors. 
+
+_What kind of analysis could we do to directly estimate the difference in slope between males and females?_
+To test the sex difference in slopes directly, fit a model with a `Sex` by body mass interaction:
+
+```{r ex-2-interaction}
+# The interaction tests whether the body-mass slope differs by sex.
+sex_model <- lm(log(brain_mass) ~ log(body_mass) * Sex, data = birds)
+summary(sex_model)
+```
+
+In this model, the `log(body_mass):Sex` interaction coefficient estimates the slope difference from the reference sex (the first `Sex` factor level). Its p-value tests whether the slopes differ. The separate male and female models are useful for describing each slope; the interaction model provides a direct comparison. If `Sex` includes an `unknown` category, the output will also show its intercept and slope differences relative to the reference sex.
+
+Because both measurements are log-transformed, the slope is an allometric exponent: it describes the approximate percentage change in brain mass for a percentage change in body mass. For the reference group, the slope is 0.57529, so a 10% increase in body mass is associated with approximately a 5.75% increase in brain mass (0.57529 × 10%). The exact power-law calculation is \(1.1^{0.57529} - 1\), or about 5.6%.
+
+### 2. Make a figure and inspect unusual points
+
+Plot log brain mass against log body mass, use a different color for each sex, and add each fitted line. Identify any species that appear far from the main cloud, especially at the upper right. Use the species names in `birds$Genus_Species` to find them.
+
+```{r ex-2-figure}
+# Plot the log-transformed measurements, distinguishing the sexes by color.
+plot(log(brain_mass) ~ log(body_mass), data = birds,
+     col = ifelse(birds$Sex == "m", "steelblue", "tomato"),
+     pch = 19, xlab = "Log body mass", ylab = "Log brain mass")
+abline(mm, col = "steelblue", lwd = 2)
+abline(mf, col = "tomato", lwd = 2)
+legend("topleft", legend = c("Male", "Female"),
+       col = c("steelblue", "tomato"), pch = 19, lty = 1, bty = "n")
+```
+
+To check the names of possible outlying species, inspect the rows with the largest log body masses or brain masses:
+
+```{r ex-2-outliers}
+birds[order(log(birds$body_mass), decreasing = TRUE),
+      c("Genus_Species", "Sex", "brain_mass", "body_mass")][1:10, ]
+```
+
+### 3. Write up your analysis
+
+**Methods:** We expected brain mass to scale with body mass according to a power-law relationship, `brain mass = a × body mass^b`. We log-transformed both variables and fitted separate linear regression models for males and females. We also fitted a model with a body-mass by sex interaction to test whether the slopes differed. The slope, *b*, describes how brain mass scales with body mass.
+
+**Results:** Brain mass scaled with body mass (Fig. 1). In males, brain mass increased by approximately 5.5% for every 10% increase in body mass (slope = 0.55, SE = 0.010), and body mass explained 83.5% of the variation in brain mass. The estimated slope was slightly steeper in females (slope = 0.57, SE = 0.012), but the interaction model did not provide clear evidence that the male and female slopes differed (male slope difference = -0.025, SE = 0.015, *t* = -1.62, *p* = 0.105). The output also included an `unknown` sex category; its slope difference from the reference category was not statistically clear (*p* = 0.130).
+
+# Optional exercise: How measurement error affects the slope
+
+The usual linear model assumes that the predictor, `x`, is measured without error. If the measured predictor contains random error, the fitted slope is often pulled toward zero. Random measurement error in the response, `y`, usually makes the estimates less precise but does not systematically pull the slope toward zero.
+
+First simulate one dataset and fit the model before adding measurement error:
+
+```{r measurement-error-start}
+set.seed(10)
+n <- 200
+beta0 <- 2                 # True intercept
+beta1 <- 1.5               # True slope
+x_true <- rnorm(n, 0, 1)   # True predictor values
+y_true <- beta0 + beta1 * x_true + rnorm(n, 0, 0.5)
+
+# With no measurement error in x, the estimated slope should be near beta1.
+summary(lm(y_true ~ x_true))
+```
+
+Now add random error to the predictor and compare the fitted slope with the no-error estimate:
+
+```{r measurement-error-once}
+error_sd <- 0.5
+x_measured <- x_true + rnorm(n, 0, error_sd)
+summary(lm(y_true ~ x_measured))
+```
+
+Repeat this over several error sizes. The reliability ratio is the proportion of variance in the measured predictor that comes from the true predictor. Dividing the observed slope by this ratio gives a simple correction under the assumptions of this simulation:
+
+\[
+K = \frac{\mathrm{Var}(x_{true})}{\mathrm{Var}(x_{true}) + \mathrm{Var}(error)}, \qquad
+\beta_{corrected} = \frac{\beta_{observed}}{K}
+\]
+
+```{r measurement-error-simulation}
+set.seed(11)
+error_sds <- seq(0, 0.5, by = 0.05)
+n_repeats <- 500
+slope_x <- corrected_x <- slope_y <- numeric(length(error_sds))
+
+for (i in seq_along(error_sds)) {
+  error_sd <- error_sds[i]
+
+  # Repeat adding error to x and record the fitted slope each time.
+  slopes_with_x_error <- replicate(n_repeats, {
+    x_measured <- x_true + rnorm(n, 0, error_sd)
+    coef(lm(y_true ~ x_measured))[2]
+  })
+  slope_x[i] <- mean(slopes_with_x_error)
+
+  # Correct the average slope using the reliability ratio K.
+  K <- var(x_true) / (var(x_true) + error_sd^2)
+  corrected_x[i] <- slope_x[i] / K
+
+  # Add the same size of random error to y instead and record the slopes.
+  slopes_with_y_error <- replicate(n_repeats, {
+    y_measured <- y_true + rnorm(n, 0, error_sd)
+    coef(lm(y_measured ~ x_true))[2]
+  })
+  slope_y[i] <- mean(slopes_with_y_error)
+}
+
+# Compare the uncorrected and corrected estimates when x has measurement error.
+par(mfrow = c(1, 2))
+plot(error_sds, slope_x, type = "b", pch = 16,
+     ylim = range(slope_x, corrected_x, beta1),
+     xlab = "Measurement error SD in x", ylab = "Mean estimated slope")
+segments(error_sds, slope_x, error_sds, corrected_x, col = "grey50")
+points(error_sds, corrected_x, pch = 17, col = "tomato")
+abline(h = beta1, lty = 2)
+legend("bottomleft", c("Observed slope", "Corrected slope", "True slope"),
+       pch = c(16, 17, NA), lty = c(1, 1, 2),
+       col = c("black", "tomato", "black"), bty = "n")
+
+# Compare slopes when the same sizes of measurement error are added to y.
+plot(error_sds, slope_y, type = "b", pch = 16,
+     ylim = range(slope_y, beta1),
+     xlab = "Measurement error SD in y", ylab = "Mean estimated slope")
+abline(h = beta1, lty = 2)
+legend("bottomleft", c("Estimated slope", "True slope"),
+       pch = c(16, NA), lty = c(1, 2), bty = "n")
+par(mfrow = c(1, 1))
+```
+
+**Interpretation:** As error in `x` increases, the uncorrected slope tends to be smaller than the true slope (attenuation). The correction should bring the estimates closer to the true slope in this simulation. Error in `y` increases the scatter in individual estimates, but their average should remain near the true slope. The correction is not automatic proof that real-world measurement error has been fixed: it relies on knowing or estimating the error variance and on the assumptions behind the reliability ratio.
