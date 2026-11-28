@@ -49,7 +49,7 @@ For the number of successes, the expected value and variance are:
 \[
 E(X)=np
 \qquad
-\operatorname{Var}(X)=np(1-p)
+\mathrm{Var}(X)=np(1-p)
 \]
 
 For the observed proportion \(\hat p=X/n\):
@@ -57,7 +57,7 @@ For the observed proportion \(\hat p=X/n\):
 \[
 E(\hat p)=p
 \qquad
-\operatorname{Var}(\hat p)=\frac{p(1-p)}{n}
+\mathrm{Var}(\hat p)=\frac{p(1-p)}{n}
 \]
 
 The variance depends on the probability and the number of trials. It is largest around \(p=0.5\), and smaller near 0 and 1. Therefore, proportional/binomial data do not generally meet the constant-variance assumption of an ordinary Gaussian linear model.
@@ -69,7 +69,7 @@ The number of trials matters: an observed proportion of 0.8 based on 50 trials c
 The **logit** (log odds) transformation is:
 
 \[
-\operatorname{logit}(p)=\log\left(\frac{p}{1-p}\right)
+\mathrm{logit}(p)=\log\left(\frac{p}{1-p}\right)
 \]
 
 It transforms probabilities between 0 and 1 to values spanning the whole real line.
@@ -77,7 +77,7 @@ It transforms probabilities between 0 and 1 to values spanning the whole real li
 The inverse-logit transforms a linear predictor back to a probability:
 
 \[
-p=\operatorname{logit}^{-1}(\eta)
+p=\mathrm{logit}^{-1}(\eta)
 =\frac{1}{1+\exp(-\eta)}
 \]
 
@@ -107,7 +107,7 @@ Logistic regression is a GLM with **binomial errors** and usually the **logit li
 For one continuous predictor:
 
 \[
-\operatorname{logit}(p)=\beta_0+\beta_1x
+\mathrm{logit}(p)=\beta_0+\beta_1x
 \]
 
 The model is linear on the log-odds scale, not on the probability scale.
@@ -343,7 +343,7 @@ The Poisson distribution has one parameter, \(\lambda\), with:
 \[
 E(X)=\lambda
 \qquad
-\operatorname{Var}(X)=\lambda
+\mathrm{Var}(X)=\lambda
 \]
 
 A Poisson GLM commonly uses a log link:

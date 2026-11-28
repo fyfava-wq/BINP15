@@ -66,13 +66,13 @@ The model's fitted values (`y_hat`) represent the variation explained by all pre
 For two predictors, the variance of the combined fitted values includes a covariance term:
 
 ```math
-\operatorname{Var}(\hat y_1+\hat y_2)
+\mathrm{Var}(\hat y_1+\hat y_2)
 =
-\operatorname{Var}(\hat y_1)
+\mathrm{Var}(\hat y_1)
 +
-\operatorname{Var}(\hat y_2)
+\mathrm{Var}(\hat y_2)
 +
-2\operatorname{Cov}(\hat y_1,\hat y_2)
+2\mathrm{Cov}(\hat y_1,\hat y_2)
 ```
 
 Therefore, the variation explained by the predictors separately does not necessarily sum to the total variation explained by the full model.
