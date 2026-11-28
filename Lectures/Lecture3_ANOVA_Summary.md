@@ -8,9 +8,9 @@ Analysis of variance (ANOVA) is a linear-model approach for questions where one 
 
 ANOVA partitions variation in a response into additive sums of squares (SS). In a one-way ANOVA, total variation is divided into variation among groups and residual variation within groups:
 
-$$
+```math
 SS_T = SS_{among} + SS_{within}
-$$
+```
 
 The analysis asks whether the among-group variation is large relative to the within-group variation expected under a common-mean model. A statistically supported factor effect means that at least one group mean differs; it does not by itself identify which groups differ.
 
@@ -32,9 +32,9 @@ A typical one-way table has one row for the factor and one for residuals. The fa
 
 For a one-factor model, the proportion of total variation explained by the factor is the model $R^2$:
 
-$$
+```math
 R^2 = SS_{among}/SS_T = 1 - SSE/SST.
-$$
+```
 
 ## 3. Fitting and interpreting a one-way model in R
 

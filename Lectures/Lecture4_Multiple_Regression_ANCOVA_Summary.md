@@ -26,9 +26,9 @@ The response variable (`y`) is continuous in these examples.
 
 Multiple regression is a linear model with several continuous explanatory variables:
 
-$$
+```math
 y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \dots + \beta_px_p + \varepsilon
-$$
+```
 
 - `y`: response variable.
 - `x1`, `x2`, ...: explanatory variables (predictors).
@@ -65,7 +65,7 @@ The model's fitted values (`y_hat`) represent the variation explained by all pre
 
 For two predictors, the variance of the combined fitted values includes a covariance term:
 
-$$
+```math
 \operatorname{Var}(\hat y_1+\hat y_2)
 =
 \operatorname{Var}(\hat y_1)
@@ -73,7 +73,7 @@ $$
 \operatorname{Var}(\hat y_2)
 +
 2\operatorname{Cov}(\hat y_1,\hat y_2)
-$$
+```
 
 Therefore, the variation explained by the predictors separately does not necessarily sum to the total variation explained by the full model.
 
@@ -105,9 +105,9 @@ The individual contributions can overlap because the predictors covary.
 
 Predictors measured in different units or with different variances can make raw slopes difficult to compare. A z-transformation gives a variable a mean of zero and a standard deviation of one:
 
-$$
+```math
 z_x = \frac{x-\bar{x}}{SD(x)}
-$$
+```
 
 ```r
 x1_z <- (x1 - mean(x1)) / sd(x1)
@@ -153,9 +153,9 @@ The lecture gives a rule of thumb that correlations above approximately **0.6–
 
 A common measure is the **variance inflation factor (VIF)**:
 
-$$
+```math
 VIF_i = \frac{1}{1-R_i^2}
-$$
+```
 
 Here, $R_i^2$ comes from a regression in which predictor $i$ is the response and all the other predictors are explanatory variables.
 
@@ -260,9 +260,9 @@ The interaction asks whether the allometric slope differs among breeding group s
 
 In the lecture example, the joint interaction test was:
 
-$$
+```math
 F_{2,30}=3.01,\quad p=0.0645
-$$
+```
 
 This is weak evidence for differences in slopes, but it is not statistically significant at the conventional 0.05 level.
 
