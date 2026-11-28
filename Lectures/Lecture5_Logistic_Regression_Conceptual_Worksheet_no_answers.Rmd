@@ -1,0 +1,268 @@
+---
+title: "BIOS15 — Conceptual Worksheet 5"
+subtitle: "Logistic regression: from binary outcomes to probabilities"
+author: ""
+date: ""
+output:
+  html_document:
+    toc: false
+    number_sections: false
+    df_print: kable
+---
+
+**Name:** ____________________________________  
+**Date:** ____________________________________
+
+**Goal.** Understand why logistic regression is appropriate for binary/binomial data, how the logit link connects a linear predictor to probabilities, and how to interpret effects biologically.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+## 1. Why not fit an ordinary straight line?
+
+Suppose each seed either germinates (1) or does not germinate (0), and we want to relate germination to soil moisture.
+
+**a.** What values can the response variable take for an individual seed?
+
+Answer: ______________________________________________________________
+
+**b.** What quantity would we usually like the model to predict for seeds at a given moisture level?
+
+Answer: ______________________________________________________________
+
+**c.** Give two reasons why an ordinary Gaussian linear regression is awkward for this response.
+
+________________________________________________________________________
+
+________________________________________________________________________
+
+**d.** If 40 of 50 seeds germinate, what observed proportion of successes do we have? What additional information besides the proportion matters?
+
+Answer: ______________________________________________________________
+
+## 2. One model, two scales
+
+The logistic model connects a linear predictor to a probability:
+
+\[
+\eta = \beta_0 + \beta_1x
+\qquad\qquad
+p = \operatorname{logit}^{-1}(\eta)
+\]
+
+```{r logistic-link-figure}
+eta <- seq(-5, 5, length.out = 300)
+p <- 1 / (1 + exp(-eta))
+par(mfrow = c(1, 2), mar = c(4, 4, 2, 1))
+plot(p, log(p / (1 - p)), type = "l", lwd = 2,
+     xlab = "Probability, p", ylab = "Log odds",
+     main = "Logit")
+abline(h = 0, v = 0.5, lty = 3)
+plot(eta, p, type = "l", lwd = 2,
+     xlab = "Log odds, eta", ylab = "Probability, p",
+     main = "Inverse-logit", ylim = c(0, 1))
+abline(h = 0.5, v = 0, lty = 3)
+```
+
+**a.** The linear predictor \(\eta\) can range from \(-\infty\) to \(+\infty\). What range must \(p\) occupy?
+
+Answer: ______________________________________________________________
+
+**b.** What probability corresponds to \(\eta = 0\)?
+
+Answer: ______________________________________________________________
+
+**c.** As \(\eta\) becomes very large and positive, what happens to \(p\)? As \(\eta\) becomes very negative?
+
+________________________________________________________________________
+
+________________________________________________________________________
+
+## 3. Read a logistic curve
+
+```{r logistic-curve}
+x <- seq(-4, 4, length.out = 300)
+p <- 1 / (1 + exp(-x))
+plot(x, p, type = "l", lwd = 2,
+     xlab = "Predictor, x", ylab = "Predicted probability",
+     ylim = c(0, 1))
+abline(h = 0.5, v = 0, lty = 3)
+```
+
+**a.** Where does a given change in \(x\) produce the largest change in probability: near \(p=0.5\), or near \(p=0/1\)? Explain from the shape.
+
+________________________________________________________________________
+
+________________________________________________________________________
+
+**b.** A positive \(\beta_1\) means that increasing \(x\) does what to the probability of success?
+
+________________________________________________________________________
+
+**c.** Is \(x\) vs. probability linear?  
+☐ Yes  ☐ No
+
+Is \(x\) vs. log odds linear?  
+☐ Yes  ☐ No
+
+**d.** Why can the same \(\beta_1\) correspond to different absolute changes in probability at different values of \(x\)?
+
+________________________________________________________________________
+
+________________________________________________________________________
+
+## 4. What does a coefficient mean?
+
+\[
+\operatorname{logit}(p) = -2 + 0.6x
+\]
+
+**a.** What does \(\beta_1=0.6\) describe directly?
+
+- ☐ A 0.6 increase in probability per unit \(x\)
+- ☐ A 0.6 increase in log odds per unit \(x\)
+- ☐ A 60% probability of success
+
+**b.** Does \(\beta_1=0.6\) imply that \(p\) increases by the same amount for every one-unit increase in \(x\)? Explain.
+
+________________________________________________________________________
+
+________________________________________________________________________
+
+**c.** At what \(x\) does this model predict \(p=0.5\)? Use \(\operatorname{logit}(0.5)=0\).
+
+Work / answer:
+
+________________________________________________________________________
+
+________________________________________________________________________
+
+## 5. Effect size depends on where you start
+
+Both curves below have the same slope on the logit scale (\(\beta_1=0.5\)), but different intercepts.
+
+```{r same-slope-curves}
+x <- seq(-5, 5, length.out = 300)
+p1 <- 1 / (1 + exp(-(-2 + 0.5 * x)))
+p2 <- 1 / (1 + exp(-(1 + 0.5 * x)))
+plot(x, p1, type = "l", lwd = 2, ylim = c(0, 1),
+     xlab = "Predictor, x", ylab = "Predicted probability")
+lines(x, p2, lwd = 2, lty = 2)
+legend("topleft", legend = c("Intercept = -2", "Intercept = 1"),
+       lty = c(1, 2), bty = "n")
+```
+
+**a.** Do equal slopes on the logit scale imply equal probability differences at a given \(x\)?  
+☐ Yes  ☐ No
+
+**b.** Why is back-transforming predictions to the probability scale often useful for biological interpretation?
+
+________________________________________________________________________
+
+________________________________________________________________________
+
+**c.** A treatment changes survival from 0.10 to 0.20 in one population and from 0.70 to 0.80 in another. Both are increases of 0.10. Would you necessarily expect identical logistic coefficients? Why?
+
+________________________________________________________________________
+
+________________________________________________________________________
+
+## 6. Binary observations are not probabilities
+
+At \(x=4\), a model predicts \(p=0.70\) for survival.
+
+**a.** Does this mean every individual at \(x=4\) should have observed \(y=0.70\)? Explain.
+
+________________________________________________________________________
+
+________________________________________________________________________
+
+**b.** For 100 similar individuals at \(x=4\), approximately how many successes would you expect on average?
+
+Answer: ____________________
+
+**c.** Why can both 0s and 1s occur at the same \(x\) even when the model is correct?
+
+________________________________________________________________________
+
+________________________________________________________________________
+
+## 7. How well does the model discriminate?
+
+The plots show predicted probabilities for cases actually observed as 0 or 1.
+
+```{r discrimination-figure}
+set.seed(42)
+n <- 24
+a0 <- runif(n, 0.10, 0.80)
+a1 <- runif(n, 0.15, 0.75)
+b0 <- runif(n, 0.02, 0.40)
+b1 <- runif(n, 0.60, 0.98)
+
+par(mfrow = c(1, 2), mar = c(5, 4, 3, 1))
+stripchart(list(a0, a1), vertical = TRUE, method = "jitter",
+           pch = 1, xaxt = "n", ylim = c(0, 1),
+           xlab = "Observed outcome", ylab = "Predicted probability",
+           main = "Model A")
+axis(1, at = 1:2, labels = c("Observed 0", "Observed 1"))
+stripchart(list(b0, b1), vertical = TRUE, method = "jitter",
+           pch = 1, xaxt = "n", ylim = c(0, 1),
+           xlab = "Observed outcome", ylab = "Predicted probability",
+           main = "Model B")
+axis(1, at = 1:2, labels = c("Observed 0", "Observed 1"))
+```
+
+**a.** Which model discriminates better?
+
+Answer: ____________________
+
+**b.** What visual feature tells you this?
+
+________________________________________________________________________
+
+________________________________________________________________________
+
+**c.** Why is ordinary linear-regression \(R^2\) not automatically appropriate for logistic regression?
+
+________________________________________________________________________
+
+________________________________________________________________________
+
+**d.** Tjur's \(D\) compares mean predicted probability for observed 1s with that for observed 0s. What would \(D\) near 0 suggest? What would a larger \(D\) suggest?
+
+________________________________________________________________________
+
+________________________________________________________________________
+
+## 8. Turn model output into biology
+
+A logistic regression of nest success on vegetation cover gives \(\hat\beta_{\text{cover}}=0.08\) on the logit scale. Predicted success is 0.30 at 20% cover and 0.62 at 60% cover.
+
+**a.** Which is easiest to communicate biologically: the logit coefficient or predicted probabilities? Why?
+
+________________________________________________________________________
+
+________________________________________________________________________
+
+**b.** Write one concise biological Results sentence using the predictions above.
+
+________________________________________________________________________
+
+________________________________________________________________________
+
+________________________________________________________________________
+
+---
+
+## Exit ticket
+
+Complete:
+
+**Logistic regression lets a linear predictor describe binary data because...**
+
+________________________________________________________________________
+
+________________________________________________________________________
+
+________________________________________________________________________

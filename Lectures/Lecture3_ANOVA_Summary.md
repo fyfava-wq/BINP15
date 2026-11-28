@@ -8,33 +8,33 @@ Analysis of variance (ANOVA) is a linear-model approach for questions where one 
 
 ANOVA partitions variation in a response into additive sums of squares (SS). In a one-way ANOVA, total variation is divided into variation among groups and residual variation within groups:
 
-\[
+$$
 SS_T = SS_{among} + SS_{within}
-\]
+$$
 
 The analysis asks whether the among-group variation is large relative to the within-group variation expected under a common-mean model. A statistically supported factor effect means that at least one group mean differs; it does not by itself identify which groups differ.
 
-The course frames ANOVA within the linear model. Residuals are assumed to be normally distributed with mean zero and a common variance (\(\sigma^2\)); for ANOVA this means residuals are approximately normal within groups and group variances are equal.
+The course frames ANOVA within the linear model. Residuals are assumed to be normally distributed with mean zero and a common variance ($\sigma^2$); for ANOVA this means residuals are approximately normal within groups and group variances are equal.
 
 ## 2. One-way ANOVA: sums of squares and the table
 
-For a factor with \(k\) levels and \(n\) observations:
+For a factor with $k$ levels and $n$ observations:
 
-- **Total SS (SST)**: sum of squared deviations of observations from the grand mean; \(SST/(n-1)\) is the sample variance.
+- **Total SS (SST)**: sum of squared deviations of observations from the grand mean; $SST/(n-1)$ is the sample variance.
 - **Among-groups SS**: sum of squared deviations of group means from the grand mean, weighted by group size. This is the variation attributed to the factor.
 - **Residual/within-groups SS (SSE)**: sum of squared deviations of observations from their own group means.
-- **Degrees of freedom**: factor \(k-1\); residual \(n-k\); total \(n-1\).
+- **Degrees of freedom**: factor $k-1$; residual $n-k$; total $n-1$.
 - **Mean square (MS)**: SS divided by its degrees of freedom.
 - **F statistic**: factor MS divided by residual MS. It compares among-group variation with residual variation.
 - **P-value**: evidence against the null hypothesis that all group means are equal, under the model assumptions.
 
 A typical one-way table has one row for the factor and one for residuals. The factor row's F-test is an omnibus test: a small p-value indicates evidence that not all means are equal, but follow-up contrasts or other comparisons are needed to describe specific differences.
 
-For a one-factor model, the proportion of total variation explained by the factor is the model \(R^2\):
+For a one-factor model, the proportion of total variation explained by the factor is the model $R^2$:
 
-\[
+$$
 R^2 = SS_{among}/SS_T = 1 - SSE/SST.
-\]
+$$
 
 ## 3. Fitting and interpreting a one-way model in R
 
@@ -56,7 +56,7 @@ anova(m)
 summary(m)
 ```
 
-In the chapter's output, the factor has 2 df (3 groups minus 1), and residuals have 147 df (150 observations minus 3 group means). The example reports factor SS = 319.97 and residual SS = 1200.43, giving total SS = 1520.40 and \(R^2\) about 0.210. Its F statistic is 19.591 (p = 2.866e-08), evidence that at least one mean differs.
+In the chapter's output, the factor has 2 df (3 groups minus 1), and residuals have 147 df (150 observations minus 3 group means). The example reports factor SS = 319.97 and residual SS = 1200.43, giving total SS = 1520.40 and $R^2$ about 0.210. Its F statistic is 19.591 (p = 2.866e-08), evidence that at least one mean differs.
 
 R's default treatment contrasts use a reference level. In this example, the alphabetical first level, `High`, is the reference. The intercept estimates its mean; `groupsLow` and `groupsMedium` estimate differences from `High`. Their t-tests test each contrast against the reference, not every possible pairwise comparison. The factor-level order can be set to choose a different reference:
 
@@ -74,7 +74,7 @@ summary(m_means)$coef
 confint(m_means)
 ```
 
-Contrasts also help quantify effect size. For example, the chapter compares the Low and High means: \(-3.456/13.701 \approx -0.252\), so the estimated Low-group mean is about 25.2% lower than the High-group mean. State the comparison and denominator when reporting a percentage.
+Contrasts also help quantify effect size. For example, the chapter compares the Low and High means: $-3.456/13.701 \approx -0.252$, so the estimated Low-group mean is about 25.2% lower than the High-group mean. State the comparison and denominator when reporting a percentage.
 
 ## 4. Two-way ANOVA and interactions
 

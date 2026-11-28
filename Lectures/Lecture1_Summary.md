@@ -47,8 +47,8 @@ The scale type determines which transformations preserve meaning. The table belo
 
 - **Nominal:** any one-to-one relabelling of categories.
 - **Ordinal:** any monotonically increasing transformation that preserves order.
-- **Interval:** a positive linear transformation, `x_new = a * x + b` (`a > 0`); differences are preserved up to a constant factor, but the zero can move.
-- **Ratio:** multiplication by a positive constant, `x_new = a * x` (`a > 0`); the natural zero remains fixed.
+- **Interval:** a positive linear transformation, $x_{\text{new}} = ax + b$ ($a > 0$); differences are preserved up to a constant factor, but the zero can move.
+- **Ratio:** multiplication by a positive constant, $x_{\text{new}} = ax$ ($a > 0$); the natural zero remains fixed.
 
 ### Examples to remember
 
@@ -76,24 +76,24 @@ A genuine extreme observation is not automatically an error and should not be re
 
 | Quantity | Formula (sample notation) | What it describes | Units |
 |---|---|---|---|
-| Variance | `s^2` | Dispersion around the mean; squared deviations | Squared units |
-| Standard deviation (SD) | `s = sqrt(s^2)` | Spread of individual observations around the mean | Same units as the data |
-| Standard error of the mean (SE) | `SE = SD / sqrt(n)` | Precision/uncertainty of the estimated mean | Same units as the data |
-| Coefficient of variation (CV) | `CV = SD / mean` | SD relative to the mean; proportional variation | Dimensionless (often reported as %) |
+| Variance | $s^2$ | Dispersion around the mean; squared deviations | Squared units |
+| Standard deviation (SD) | $s = \sqrt{s^2}$ | Spread of individual observations around the mean | Same units as the data |
+| Standard error of the mean (SE) | $SE = SD / \sqrt{n}$ | Precision/uncertainty of the estimated mean | Same units as the data |
+| Coefficient of variation (CV) | $CV = SD / \text{mean}$ | SD relative to the mean; proportional variation | Dimensionless (often reported as %) |
 
 Important distinctions:
 
 - SD describes **variation among observations**, not the precision of the estimated mean.
 - SE describes the uncertainty/precision of an estimate; it generally decreases as sample size increases.
 - A population can have substantial biological variation but a precisely estimated mean if the sample is sufficiently large.
-- Do not write `mean ± SD` if the intention is to communicate uncertainty in the mean. State clearly whether the quantity is SD or SE.
+- Do not write $\text{mean} \pm SD$ if the intention is to communicate uncertainty in the mean. State clearly whether the quantity is SD or SE.
 - Variances are additive in variance partitioning; standard deviations are not.
 
 ### Comparing variation: absolute vs proportional
 
 A larger mean often comes with a larger SD. To compare variation relative to the mean, the lecture introduces:
 
-`CV = SD / mean`
+$CV = SD / \text{mean}$
 
 Example from the conceptual worksheet:
 
@@ -108,7 +108,7 @@ Species B has the larger absolute SD (5 mm), but Species A has the larger propor
 
 For positive values, log transformations can express multiplicative differences as additive differences:
 
-- `log(a / b) = log(a) - log(b)`.
+- $\log(a/b) = \log(a) - \log(b)$.
 - When two values are relatively close, a difference on the natural-log scale multiplied by 100 is approximately a percentage difference.
 - The lecture notes that SD on a log scale is similar to SD divided by the mean (approximately CV) when variance is small relative to the mean.
 
@@ -122,7 +122,7 @@ Key points from the ASA statement (Wasserstein & Lazar, 2016) and Berner & Amrhe
 
 - A p-value is not the probability that the null hypothesis is true.
 - A p-value alone does not measure the size or biological importance of an effect.
-- `p < 0.05` is not a magical boundary separating true from false findings.
+- $p < 0.05$ is not a magical boundary separating true from false findings.
 - A non-significant result does not establish that there is no effect.
 - Interpret estimates in context and consider their uncertainty (for example, confidence/compatibility intervals), study design and biological relevance.
 
